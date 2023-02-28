@@ -3,7 +3,7 @@ Input:
 "Another\""
 
 Output:
-["A string", "Another\""]
+["A string", "Another\\\""]
 
 ---
 # https://en.wikipedia.org/wiki/List_of_common_misconceptions
@@ -75,9 +75,8 @@ Input:
 <li>XUXU (<a href="/wiki/Strawberry" title="Strawberry">strawberry</a>)</li>
 <li><a href="/w/index.php?title=Og_natura_Stone_Bramble_Liqueur&amp;action=edit&amp;redlink=1" class="new" title="Og natura Stone Bramble Liqueur (page does not exist)">Og natura Stone Bramble Liqueur</a> (<a href="/wiki/Stone_bramble" class="mw-redirect" title="Stone bramble">stone bramble</a>)</li>
 
-
-Ouput:
-["99 Berries", "Chambord (raspberry)", "Cr\u00e8me de cassis (blackcurrant)", "Guavaberry", "Hideous (raspberries, other berries and citrus fruits)", "Lakka (cloudberry)", "Lillehammer (lingonberry)", "Mirto (Sardinian traditional bitterish liqueur made with myrtle, used as digestive drink at the end of meals)", "Murtado (ugniberry)", "XUXU (strawberry)", "Og natura Stone Bramble Liqueur (stone bramble)"]
+Output:
+["99 Berries", "Chambord (raspberry)", "Crème de cassis (blackcurrant)", "Guavaberry", "Hideous (raspberries, other berries and citrus fruits)", "Lakka (cloudberry)", "Lillehammer (lingonberry)", "Mirto (Sardinian traditional bitterish liqueur made with myrtle, used as digestive drink at the end of meals)", "Murtado (ugniberry)", "XUXU (strawberry)", "Og natura Stone Bramble Liqueur (stone bramble)"]
 
 
 ---
@@ -204,5 +203,7 @@ Output:
 Input:
 "ABC" abc
 
-Output
+Output:
 ["ABC", "abc"]
+
+
