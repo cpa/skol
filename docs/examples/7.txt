@@ -1,0 +1,4 @@
+# Postgres Array
+# https://www.postgresql.org/docs/current/arrays.html
+
+ARRAY['Alice', 'Bob', 'Eve']

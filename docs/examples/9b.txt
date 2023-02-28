@@ -1,0 +1,4 @@
+{"You're beautiful",
+ "It's true",
+ "It\'s true",
+ "As they say: \"So beautiful\""}
