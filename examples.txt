@@ -1,0 +1,208 @@
+Input:
+"A string"
+"Another\""
+
+Output:
+["A string", "Another\""]
+
+---
+# https://en.wikipedia.org/wiki/List_of_common_misconceptions
+~ambiguous
+Input:
+    Searing does not seal moisture in meat; in fact, it causes it to lose some moisture. Meat is seared to brown it, improving its color, flavor, and texture.[13]
+    Twinkies, an American snack cake generally considered as "junk food", have a shelf life of around 45 days, despite the common claim (usually facetious) that they remain edible for decades.[14][15] Twinkies, with only sorbic acid as an added preservative, normally remain on a store shelf for 7 to 10 days.[16][17]
+
+    There are no known cases of children having been killed or seriously injured by poisoned candy or fruit given to them by strangers at Halloween or any other time, though there are cases where people have poisoned their own children.[18]
+    With the exception of some perishables, properly stored foods can safely be eaten past their "expiration" dates.[19][20] The vast majority of expiration dates in the United States are regulated by state governments and refer to food quality, not safety; the "Use by" date represents the last day the manufacturer warrants the quality of their product.
+
+Output:
+["Searing does not seal moisture in meat; in fact, it causes it to lose some moisture. Meat is seared to brown it, improving its color, flavor, and texture.[13]", "Twinkies, an American snack cake generally considered as \"junk food\", have a shelf life of around 45 days, despite the common claim (usually facetious) that they remain edible for decades.[14][15] Twinkies, with only sorbic acid as an added preservative, normally remain on a store shelf for 7 to 10 days.[16][17]", "There are no known cases of children having been killed or seriously injured by poisoned candy or fruit given to them by strangers at Halloween or any other time, though there are cases where people have poisoned their own children.[18]", "With the exception of some perishables, properly stored foods can safely be eaten past their \"expiration\" dates.[19][20] The vast majority of expiration dates in the United States are regulated by state governments and refer to food quality, not safety; the \"Use by\" date represents the last day the manufacturer warrants the quality of their product."]
+
+
+---
+# https://en.wikipedia.org/wiki/List_of_feature_films_with_gay_characters
+~ambiguous
+
+Input:
+1919 	Different from the Others 	Paul Körner 	Conrad Veidt
+Karl Giese (young) 	The first film supportive of homosexuality. 	Germany 	[1][2]
+1924 	Michael 	Claude Zoret 	Benjamin Christiensen 	Claude is a painter who falls in love with his assistant, Michael. Michael eventually leaves Claude for a woman. 	Germany 	[3]
+1941 	The Maltese Falcon 	Joel Cairo 	Peter Lorre 	In the novel upon which the film is based, Cairo is referred to as "queer" and a "fairy" but, in the film, his sexuality is not directly addressed, likely a decision by filmmakers in order to comply with the Hays Code, which banned the depiction of homosexuality in American films. 	United States 	[4][5][6]
+1948 	Rope 	Phillip Morgan 	Farley Granger 	Because of the Hays Code, the word "homosexual" could not be stated outright and was referred to as "it".
+Adapted from the 1929 British play Rope's End, which is loosely based on the Leopold and Loeb murder case. 	United States 	[7][8][9]
+Brandon Shaw 	John Dall
+1950 	All About Eve 	Addison DeWitt 	George Sanders 	Addison is a gossip columnist who engages in loveless relationship predation.
+(The constraints of the Motion Picture Production Code did not allow homosexuality to be portrayed overtly.) 	United States 	[10][11]
+1955 	Rebel Without a Cause 	John "Plato" Crawford 	Sal Mineo 	Plato was brought in for killing a litter of puppies. 	United States 	[12][13]
+
+Output:
+None
+
+
+---
+# https://en.wikipedia.org/wiki/Index_of_Kansas-related_articles
+
+Input:
+Baby Jay
+Battle of Baxter Springs
+Battle of Marais des Cygnes
+Battle of Mine Creek
+Big Red One
+birds
+Bleeding Kansas
+(Kansas) Board of Regents
+boarding schools (category)
+Boeing
+Botanical gardens in Kansas
+
+Output:
+["Baby Jay", "Battle of Baxter Springs", "Battle of Marais des Cygnes", "Battle of Mine Creek", "Big Red One", "birds", "Bleeding Kansas", "(Kansas) Board of Regents", "boarding schools (category)", "Boeing", "Botanical gardens in Kansas"]
+
+
+---
+# https://en.wikipedia.org/wiki/List_of_liqueurs
+~ambiguous
+Input:
+<li><a href="/wiki/99_Berries" class="mw-redirect" title="99 Berries">99 Berries</a></li>
+<li><a href="/wiki/Chambord_(liqueur)" title="Chambord (liqueur)">Chambord</a> (<a href="/wiki/Raspberry" title="Raspberry">raspberry</a>)</li>
+<li><a href="/wiki/Cr%C3%A8me_de_cassis" title="Crème de cassis">Crème de cassis</a> (<a href="/wiki/Blackcurrant" title="Blackcurrant">blackcurrant</a>)</li>
+<li><a href="/wiki/Guavaberry" class="mw-redirect" title="Guavaberry">Guavaberry</a></li>
+<li><a href="/wiki/Hideous_(liqueur)" title="Hideous (liqueur)">Hideous</a> (raspberries, other berries and citrus fruits)</li>
+<li><a href="/wiki/Lakka" title="Lakka">Lakka</a> (<a href="/wiki/Cloudberry" class="mw-redirect" title="Cloudberry">cloudberry</a>)</li>
+<li><a href="/wiki/Lillehammer" title="Lillehammer">Lillehammer</a> (<a href="/wiki/Vaccinium_vitis-idaea" title="Vaccinium vitis-idaea">lingonberry</a>)</li>
+<li><a href="/wiki/Mirto_(liqueur)" title="Mirto (liqueur)">Mirto</a> (Sardinian traditional bitterish liqueur made with myrtle, used as digestive drink at the end of meals)</li>
+<li><a href="/wiki/Murtado" title="Murtado">Murtado</a> (<a href="/wiki/Ugni_molinae" title="Ugni molinae">ugniberry</a>)</li>
+<li>XUXU (<a href="/wiki/Strawberry" title="Strawberry">strawberry</a>)</li>
+<li><a href="/w/index.php?title=Og_natura_Stone_Bramble_Liqueur&amp;action=edit&amp;redlink=1" class="new" title="Og natura Stone Bramble Liqueur (page does not exist)">Og natura Stone Bramble Liqueur</a> (<a href="/wiki/Stone_bramble" class="mw-redirect" title="Stone bramble">stone bramble</a>)</li>
+
+
+Ouput:
+["99 Berries", "Chambord (raspberry)", "Cr\u00e8me de cassis (blackcurrant)", "Guavaberry", "Hideous (raspberries, other berries and citrus fruits)", "Lakka (cloudberry)", "Lillehammer (lingonberry)", "Mirto (Sardinian traditional bitterish liqueur made with myrtle, used as digestive drink at the end of meals)", "Murtado (ugniberry)", "XUXU (strawberry)", "Og natura Stone Bramble Liqueur (stone bramble)"]
+
+
+---
+# https://www.belastingdienst.nl/wps/wcm/connect/bldcontenten/belastingdienst/individuals/tax-regulations/tax_treaties/list-of-eu-countries/
+
+Input:
+l = ['Austria',
+'Belgium',
+'Bulgaria',
+'Croatia',
+'Cyprus',
+'Czech Republic',
+'Denmark',
+'Estonia',
+'Finland',
+'France',
+'Germany',
+'Greece',
+'Hungary',
+'Ireland',
+'Italy',
+'Latvia',
+'Lithuania',
+'Luxembourg',
+'Malta',
+'The Netherlands',
+'Poland',
+'Portugal',
+'Romania',
+'Slovakia',
+'Slovenia',
+'Spain',
+'Sweden',
+]
+
+
+Output:
+["Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "The Netherlands", "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"]
+
+
+---
+Input:
+["Ford", "BMW", "Fiat"]
+
+Output:
+["Ford", "BMW", "Fiat"]
+
+---
+Input:
+ARRAY['Alice', 'Bob', 'Eve']
+
+Output:
+["Alice", "Bob", "Eve"]
+
+
+---
+Input:
+ARRAY['Alice d\'Amelo', 'Bob di Giovanni', 'Eve de Rucco']
+
+Output:
+["Alice d\\'Amelo", "Bob di Giovanni", "Eve de Rucco"]
+
+
+---
+~ambiguous
+Input:
+'Alice d\'Amelo'  'Bob di Giovanni' 'Eve de Rucco'
+
+Output:
+None
+
+
+---
+Input:
+{"You're beautiful",
+ "It's true",
+ "It\'s true"}
+
+Output:
+["You're beautiful", "It's true", "It\\'s true"]
+
+---
+Input:
+{"You're beautiful",
+ "It's true",
+ "It\'s true",
+ "As they say: \"So beautiful\""}
+
+Output:
+["You're beautiful", "It's true", "It\\'s true", "As they say: \\\"So beautiful\\\""]
+
+
+---
+Input:
+1,2,3,4,5,test, fz ,
+
+Output:
+None
+
+
+---
+Input:
+a b c d, e f , g
+
+Output:
+None
+
+
+---
+~ambiguous
+Input:
+[a,
+b,
+c,
+d,
+e,
+f]
+
+Output:
+["[a", "b", "c", "d", "e", "f]"]
+
+
+---
+Input:
+"ABC" abc
+
+Output
+["ABC", "abc"]
