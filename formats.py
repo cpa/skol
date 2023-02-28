@@ -17,7 +17,9 @@ class Format:
         try:
             cls.load(data)
         except CannotLoadDataError:
+            logging.debug(f"Data is not a {cls.name} expression")
             return False
+        logging.debug(f"Data is a {cls.name} expression")
         return True
 
     @staticmethod
@@ -35,9 +37,7 @@ class JSONFormat(Format):
         try:
             json_data = json.loads(data)
         except json.JSONDecodeError as e:
-            logging.info("Data is not a JSON object")
             raise CannotLoadDataError
-        logging.info("Data is a JSON object")
         return json_data
 
     @staticmethod
@@ -57,13 +57,10 @@ class PythonFormat(Format):
         try:
             python_data = ast.literal_eval(data)
         except Exception:
-            logging.info("Data is not a Python object")
             raise CannotLoadDataError
-        if isinstance(python_data, list):
-            logging.info("Data is a Python list")
-            return python_data
-        logging.info("Data is a Python object, but not a list")
-        raise CannotLoadDataError
+        # if isinstance(python_data, list):
+        return python_data
+        # raise CannotLoadDataError
 
     @staticmethod
     def to_string(obj):

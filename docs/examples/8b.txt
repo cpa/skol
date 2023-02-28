@@ -1,0 +1,4 @@
+# Postgres Array
+# https://www.postgresql.org/docs/current/arrays.html
+
+'Alice d\'Amelo'  'Bob di Giovanni' 'Eve de Rucco'

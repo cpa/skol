@@ -44,10 +44,10 @@ def guess_if_data_is_quoted(data):
         escaped_quote_char_count = data.count("\\" + quote_char)
 
         if quote_char_count == 0:
-            logging.info(f"Quote char {quote_char} not found in data")
+            logging.debug(f"Quote char {quote_char} not found in data")
             continue
 
-        logging.info(
+        logging.debug(
             f"Quote char {quote_char} found {quote_char_count} times{', of which ' + str(escaped_quote_char_count) + ' are escaped' if escaped_quote_char_count > 0 else ''}."
         )
 
@@ -56,11 +56,11 @@ def guess_if_data_is_quoted(data):
         )
 
     if not candidates or all([c == 0 for (_, c, _) in candidates]):
-        logging.info(f"Not quote character found in input data")
+        logging.debug(f"No quote character found in input data")
         return False, None
     else:
         candidates.sort(key=lambda d: -d[1])  # Sort on counts
-        logging.info(f"Using {candidates[0][0]} as quote character")
+        logging.debug(f"Using {candidates[0][0]} as quote character")
         # split_data = split_by_quote_char(data, quote_char=candidates[0][0])
         return True, candidates[0][0]
 
@@ -92,16 +92,16 @@ def guess_separator_unquoted(data):
             possible_separator,
             possible_separator_count,
         ) = non_alnum_suffix_counter.most_common(1)[0]
-        logging.info(
+        logging.debug(
             f"Most common non-alnum prefix is {possible_separator} ({possible_separator_count} occurence(s), {int(float(possible_separator_count) / len(split_data) * 100)}% of lines)."
         )
         if float(possible_separator_count) / len(split_data) > 0.8:
-            logging.info(
+            logging.debug(
                 f"{possible_separator} is a suffix of more than 80% of all lines, will use as separator"
             )
             return possible_separator
         else:
-            logging.info(
+            logging.debug(
                 f"{possible_separator} is a suffix of less than 80% of all lines, will not use as separator. Trying prefixes."
             )
 
@@ -123,20 +123,20 @@ def guess_separator_unquoted(data):
             possible_separator,
             possible_separator_count,
         ) = non_alnum_prefix_counter.most_common(1)[0]
-        logging.info(
+        logging.debug(
             f"Most common non-alnum prefix is {possible_separator} ({possible_separator_count} occurence(s), {int(float(possible_separator_count) / len(split_data) * 100)}% of lines)."
         )
         if float(possible_separator_count) / len(split_data) > 0.8:
-            logging.info(
+            logging.debug(
                 f"{possible_separator} is a suffix of more than 80% of all lines, will use as separator"
             )
             return possible_separator
         else:
-            logging.info(
+            logging.debug(
                 f"{possible_separator} is a suffix of less than 80% of all lines, will not use as separator. Trying \\n."
             )
 
-    logging.info(
+    logging.debug(
         "Could not find a common suffix or prefix appearing on most lines, defaulting to \\n"
     )
     return "\n"
@@ -145,7 +145,7 @@ def guess_separator_unquoted(data):
     # # print(data, split_data)
 
     # if len(split_data) == 1:
-    #     logging.info("Data is one line long")
+    #     logging.debug("Data is one line long")
     #     data = split_data[0]
     #     non_alnum = [c for c in data if not c.isalnum()]
     #     print(non_alnum)
@@ -153,7 +153,7 @@ def guess_separator_unquoted(data):
     # else:
     #     # In this case len > 1 because the case where len == 0 has
     #     # been caught before in the code. Right?
-    #     logging.info("Data is more than one line long")
+    #     logging.debug("Data is more than one line long")
 
     #     possible_separators = []
     #     for line in split_data:
