@@ -3,6 +3,7 @@ import sys
 
 import click
 
+from llm import ask
 from formats import FORMATS, JSONFormat
 from guesses import (
     guess_if_data_is_quoted,
@@ -10,20 +11,22 @@ from guesses import (
     split_by_quote_char,
 )
 
-logging.root.setLevel(logging.DEBUG)
-
-
 @click.command()
 @click.argument("filename", default=sys.stdin, type=click.File(mode="r"))
 @click.option(
     "--format",
-    type=click.Choice(["JSON", "Python"], case_sensitive=False),
+    type=click.Choice([format.name for format in FORMATS], case_sensitive=False),
     default="JSON",
 )
 @click.option("--skip-empty-lines/--keep-empty-lines", default=True)
 @click.option("--comment-string", default="#")
 @click.option("--sep", "separator", type=click.STRING, default=None)
-def main(filename, format, skip_empty_lines, comment_string, separator):
+@click.option("--ai", "--ask-the-gods", is_flag=True, default=False, help="Tries to use a large language model to format the data into a list. Please set your an environment variable OPENAI_API_KEY with your secret key.\nSee:https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key")
+@click.option("--debug", is_flag=True)
+def main(filename, format, skip_empty_lines, comment_string, separator, ai, debug):
+    if debug:
+        logging.root.setLevel(logging.DEBUG)
+
     # Load the class corresponding to the chosin output format
     # TODO: use a dict (but who cares?)
     output_format = None
@@ -55,6 +58,23 @@ def main(filename, format, skip_empty_lines, comment_string, separator):
         click.echo(output_format.to_string([]))
         sys.exit(0)
 
+    if ai:
+        import os
+        try:
+            openai_api_key = os.getenv("OPENAI_API_KEY")
+        except:
+            sys.exit("You must set the OPENAI_API_KEY environment variable. See --help for details.")
+        try:
+            response = ask(raw_data, openai_api_key)
+            logging.debug(f"OPENAI's response:\n {response}")
+            import json
+            json_response = response["choices"][0]["text"]
+            logging.debug(f"We choose this output: {json_response}")
+            click.echo(output_format.to_string(json.loads(json_response)))
+        except Exception as e:
+            raise e
+        sys.exit(0)
+
     # Check if we already have a separator
     if separator is not None:
         logging.debug(f"Using provided separator {separator}")
@@ -63,30 +83,37 @@ def main(filename, format, skip_empty_lines, comment_string, separator):
 
     # Check if data is in a know format
     valid_formats = [format for format in FORMATS if format.is_valid(raw_data)]
-
-    # That is the very easy case, where the data can be directly
-    # decoded by one of the implemented formats
-    if len(valid_formats) == 1:
-        logging.debug(f"{valid_formats[0].name} is the only valid format, will decode using it")
+    if len(valid_formats) == 0:
+        logging.debug("Data is not in a known format, will try to guess something…")
+    else:
+        logging.debug(f"Data can be read by {len(valid_formats)} parsers ({[f.name for f in valid_formats]}). Will use the first one to parse the data.") # TODO: give a way to choose the input parser?
         click.echo(output_format.to_string(valid_formats[0].load(raw_data)))
         sys.exit(0)
+    
+    
+    # # That is the very easy case, where the data can be directly
+    # # decoded by one of the implemented formats
+    # if len(valid_formats) == 1:
+    #     logging.debug(f"{valid_formats[0].name} is the only valid format, will decode using it")
+    #     click.echo(output_format.to_string(valid_formats[0].load(raw_data)))
+    #     sys.exit(0)
 
-    # Less easy case, where the data can be directly decoded by
-    # several of the implemented formats. If it is valid JSON, it will
-    # be decoded as JSON, otherwise will use the first format that
-    # matches.
-    elif len(valid_formats) > 1:
-        logging.debug(
-            f"{len(valid_formats)} valid formats ({[f.name for f in valid_formats]}), will decode using JSON if it is in the list, or the first one in the list otherwise."
-        )
-        if any([f.name == "JSON" for f in valid_formats]):
-            click.echo(JSONFormat.to_string(valid_formats[0].load(raw_data)))
-            sys.exit(0)
-        else:
-            click.echo(valid_formats[0].to_string(valid_formats[0].load(raw_data)))
-            sys.exit(0)
-    else:
-        logging.debug("Data is not in a known format, will try to guess something…")
+    # # Less easy case, where the data can be directly decoded by
+    # # several of the implemented formats. If it is valid JSON, it will
+    # # be decoded as JSON, otherwise will use the first format that
+    # # matches.
+    # elif len(valid_formats) > 1:
+    #     logging.debug(
+    #         f"{len(valid_formats)} valid formats ({[f.name for f in valid_formats]}), will decode using JSON if it is in the list, or the first one in the list otherwise."
+    #     )
+    #     if any([f.name == "JSON" for f in valid_formats]):
+    #         click.echo(JSONFormat.to_string(valid_formats[0].load(raw_data)))
+    #         sys.exit(0)
+    #     else:
+    #         click.echo(valid_formats[0].to_string(valid_formats[0].load(raw_data)))
+    #         sys.exit(0)
+    # else:
+    #     logging.debug("Data is not in a known format, will try to guess something…")
 
     quoted, quote_char = guess_if_data_is_quoted(raw_data)
     if quoted:
