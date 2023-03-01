@@ -32,7 +32,7 @@ with open("examples.txt", "r") as fd:
         part = 'header'
 
 @pytest.mark.parametrize("test_input,expected", test_data)
-def test_eval(test_input, expected):
+def test_out_format_json_no_ai(test_input, expected):
     with NamedTemporaryFile("w+") as fd:
         fd.write(test_input)
         fd.flush()
@@ -40,3 +40,15 @@ def test_eval(test_input, expected):
         result = runner.invoke(main, [fd.name, "--format=json"])
         assert not result.exception
         assert result.stdout.strip() == expected
+
+
+# Commenting out this test as it's slow and costly
+# @pytest.mark.parametrize("test_input,expected", test_data)
+# def test_out_format_json_with_ai(test_input, expected):
+#     with NamedTemporaryFile("w+") as fd:
+#         fd.write(test_input)
+#         fd.flush()
+#         runner = CliRunner()
+#         result = runner.invoke(main, [fd.name, "--format=json", "--ai"])
+#         assert not result.exception
+#         assert result.stdout.strip() == expected

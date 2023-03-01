@@ -18,10 +18,11 @@ from llm import ask
     "--format",
     type=click.Choice([format.name for format in FORMATS], case_sensitive=False),
     default="JSON",
+    help="Output format"
 )
-@click.option("--skip-empty-lines/--keep-empty-lines", default=True)
-@click.option("--comment-string", default="#")
-@click.option("--sep", "separator", type=click.STRING, default=None)
+@click.option("--skip-empty-lines/--keep-empty-lines", default=True, help="Defaults to removing empty lines from input")
+@click.option("--comment-string", default="#", help="Prefix character for comment lines (that will be ignored), defaults to ignoring lines starting with #")
+@click.option("--sep", "separator", type=click.STRING, default=None, help="Separator character or string")
 @click.option(
     "--ai",
     "--ask-the-gods",
@@ -29,12 +30,12 @@ from llm import ask
     default=False,
     help="Tries to use a large language model to format the data into a list. Please set your an environment variable OPENAI_API_KEY with your secret key.\nSee:https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key",
 )
-@click.option("--debug", is_flag=True)
+@click.option("--debug", is_flag=True, help="Print debug information")
 def main(filename, format, skip_empty_lines, comment_string, separator, ai, debug):
     if debug:
         logging.root.setLevel(logging.DEBUG)
 
-    # Load the class corresponding to the chosin output format
+    # Load the class corresponding to the chosen output format
     # TODO: use a dict (but who cares?)
     output_format = None
     for possible_format in FORMATS:
@@ -55,8 +56,6 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
 
     if skip_empty_lines:
         raw_data = "\n".join([line for line in raw_data.split("\n") if line != ""])
-    else:
-        raise NotImplementedError  # TODO
 
     # Meaning that data is empty or a collection of empty lines
     # TODO: performance
@@ -90,6 +89,7 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
     if separator is not None:
         logging.debug(f"Using provided separator {separator}")
         click.echo(JSONFormat.to_string(raw_data.split(sep=separator)))
+        # TODO: try to guess if data is quoted, try to remove prefix/suffix symbols…
         sys.exit(0)
 
     # Check if data is in a know format
@@ -102,30 +102,6 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
         )  # TODO: give a way to choose the input parser?
         click.echo(output_format.to_string(valid_formats[0].load(raw_data)))
         sys.exit(0)
-
-    # # That is the very easy case, where the data can be directly
-    # # decoded by one of the implemented formats
-    # if len(valid_formats) == 1:
-    #     logging.debug(f"{valid_formats[0].name} is the only valid format, will decode using it")
-    #     click.echo(output_format.to_string(valid_formats[0].load(raw_data)))
-    #     sys.exit(0)
-
-    # # Less easy case, where the data can be directly decoded by
-    # # several of the implemented formats. If it is valid JSON, it will
-    # # be decoded as JSON, otherwise will use the first format that
-    # # matches.
-    # elif len(valid_formats) > 1:
-    #     logging.debug(
-    #         f"{len(valid_formats)} valid formats ({[f.name for f in valid_formats]}), will decode using JSON if it is in the list, or the first one in the list otherwise."
-    #     )
-    #     if any([f.name == "JSON" for f in valid_formats]):
-    #         click.echo(JSONFormat.to_string(valid_formats[0].load(raw_data)))
-    #         sys.exit(0)
-    #     else:
-    #         click.echo(valid_formats[0].to_string(valid_formats[0].load(raw_data)))
-    #         sys.exit(0)
-    # else:
-    #     logging.debug("Data is not in a known format, will try to guess something…")
 
     quoted, quote_char = guess_if_data_is_quoted(raw_data)
     if quoted:
@@ -152,13 +128,11 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
                 click.echo(
                     output_format.to_string([x.strip() for x in inside_fragments])
                 )
-
     else:
         separator = guess_separator_unquoted(raw_data)
         click.echo(
             output_format.to_string([x.strip() for x in raw_data.split(sep=separator)])
         )
-    # guess_types(data)
 
 
 if __name__ == "__main__":
