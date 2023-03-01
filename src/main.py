@@ -3,13 +3,13 @@ import sys
 
 import click
 
-from src.formats import FORMATS, JSONFormat
-from src.guesses import (
+from formats import FORMATS, JSONFormat
+from guesses import (
     guess_if_data_is_quoted,
     guess_separator_unquoted,
     split_by_quote_char,
 )
-from src.llm import ask
+from llm import ask
 
 
 @click.command()
