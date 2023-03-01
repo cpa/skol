@@ -29,10 +29,7 @@ def split_by_quote_char(data, quote_char):
     else:
         result.append(("".join(accumulator), "OUTSIDE"))
 
-    result = [
-        (fragment.replace(replacer, "\\" + quote_char), status)
-        for fragment, status in result
-    ]
+    result = [(fragment.replace(replacer, "\\" + quote_char), status) for fragment, status in result]
 
     return result
 
@@ -51,9 +48,7 @@ def guess_if_data_is_quoted(data):
             f"Quote char {quote_char} found {quote_char_count} times{', of which ' + str(escaped_quote_char_count) + ' are escaped' if escaped_quote_char_count > 0 else ''}."
         )
 
-        candidates.append(
-            (quote_char, quote_char_count - escaped_quote_char_count, quote_char_count)
-        )
+        candidates.append((quote_char, quote_char_count - escaped_quote_char_count, quote_char_count))
 
     if not candidates or all([c == 0 for (_, c, _) in candidates]):
         logging.debug(f"No quote character found in input data")
@@ -91,19 +86,17 @@ def guess_separator_unquoted(data):
         (
             possible_separator,
             possible_separator_count,
-        ) = non_alnum_suffix_counter.most_common(1)[0]
+        ) = non_alnum_suffix_counter.most_common(
+            1
+        )[0]
         logging.debug(
             f"Most common non-alnum prefix is {possible_separator} ({possible_separator_count} occurence(s), {int(float(possible_separator_count) / len(split_data) * 100)}% of lines)."
         )
         if float(possible_separator_count) / len(split_data) > 0.8:
-            logging.debug(
-                f"{possible_separator} is a suffix of more than 80% of all lines, will use as separator"
-            )
+            logging.debug(f"{possible_separator} is a suffix of more than 80% of all lines, will use as separator")
             return possible_separator
         else:
-            logging.debug(
-                f"{possible_separator} is a suffix of less than 80% of all lines, will not use as separator. Trying prefixes."
-            )
+            logging.debug(f"{possible_separator} is a suffix of less than 80% of all lines, will not use as separator. Trying prefixes.")
 
     tmp_prefix = []
     for line in split_data:
@@ -122,23 +115,19 @@ def guess_separator_unquoted(data):
         (
             possible_separator,
             possible_separator_count,
-        ) = non_alnum_prefix_counter.most_common(1)[0]
+        ) = non_alnum_prefix_counter.most_common(
+            1
+        )[0]
         logging.debug(
             f"Most common non-alnum prefix is {possible_separator} ({possible_separator_count} occurence(s), {int(float(possible_separator_count) / len(split_data) * 100)}% of lines)."
         )
         if float(possible_separator_count) / len(split_data) > 0.8:
-            logging.debug(
-                f"{possible_separator} is a suffix of more than 80% of all lines, will use as separator"
-            )
+            logging.debug(f"{possible_separator} is a suffix of more than 80% of all lines, will use as separator")
             return possible_separator
         else:
-            logging.debug(
-                f"{possible_separator} is a suffix of less than 80% of all lines, will not use as separator. Trying \\n."
-            )
+            logging.debug(f"{possible_separator} is a suffix of less than 80% of all lines, will not use as separator. Trying \\n.")
 
-    logging.debug(
-        "Could not find a common suffix or prefix appearing on most lines, defaulting to \\n"
-    )
+    logging.debug("Could not find a common suffix or prefix appearing on most lines, defaulting to \\n")
     return "\n"
 
     # split_data = data.split()  # TODO: splits on any whitespace character

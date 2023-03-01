@@ -1,35 +1,37 @@
 from tempfile import NamedTemporaryFile
-from click.testing import CliRunner
+
 import pytest
+from click.testing import CliRunner
 
 from src.main import main
 
 with open("examples.txt", "r") as fd:
-    tmp = fd.read().split('---')
+    tmp = fd.read().split("---")
     tmp = [fragment.splitlines() for fragment in tmp]
     # tmp = [[subfragment.strip() for subfragment in fragment if not subfragment.strip().startswith("#")] for fragment in tmp]
 
     test_data = []
     cur_input = []
     cur_output = []
-    part = 'header'
+    part = "header"
 
     for fragment_tmp in tmp:
         for line in fragment_tmp:
-            if line == 'Input:':
-                part = 'input_body'
+            if line == "Input:":
+                part = "input_body"
                 continue
-            if line == 'Output:':
-                part = 'output_body'
+            if line == "Output:":
+                part = "output_body"
                 continue
-            if part == 'input_body':
+            if part == "input_body":
                 cur_input.append(line)
-            if part == 'output_body':
+            if part == "output_body":
                 cur_output.append(line)
-        test_data.append(("\n".join([f for f in cur_input]), [f for f in cur_output if f != ''][0]))
+        test_data.append(("\n".join([f for f in cur_input]), [f for f in cur_output if f != ""][0]))
         cur_input = []
         cur_output = []
-        part = 'header'
+        part = "header"
+
 
 @pytest.mark.parametrize("test_input,expected", test_data)
 def test_out_format_json_no_ai(test_input, expected):
