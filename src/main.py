@@ -14,12 +14,12 @@ from llm import ask
 
 @click.command()
 @click.argument("filename", default=sys.stdin, type=click.File(mode="r"))
-@click.option("--format", type=click.Choice([format.name for format in FORMATS], case_sensitive=False), default="JSON", help="Output format")
-@click.option("--skip-empty-lines/--keep-empty-lines", default=True, help="Defaults to removing empty lines from input")
+@click.option("--format", "-f", type=click.Choice([format.name for format in FORMATS], case_sensitive=False), default="JSON", help="Output format")
+@click.option("--skip-empty-lines/--keep-empty-lines", "-s", default=True, help="Defaults to removing empty lines from input")
 @click.option(
-    "--comment-string", default="#", help="Prefix character for comment lines (that will be ignored), defaults to ignoring lines starting with #"
+    "--comment-string", "-c", default="#", help="Prefix character for comment lines (that will be ignored), defaults to ignoring lines starting with #"
 )
-@click.option("--sep", "separator", type=click.STRING, default=None, help="Separator character or string")
+@click.option("--sep", "-s", "separator", type=click.STRING, default=None, help="Separator character or string")
 @click.option(
     "--ai",
     "--ask-the-gods",

@@ -26,6 +26,16 @@ class Format:
     def to_string(obj):
         raise NotImplementedError
 
+class RawFormat(Format):
+    name = "Raw"
+
+    @staticmethod
+    def load(data):
+        return data.splitlines()
+
+    @staticmethod
+    def to_string(obj):
+        '\n'.join([o for o in obj])
 
 class JSONFormat(Format):
     name = "JSON"
@@ -89,4 +99,4 @@ class PostgresFormat(Format):
         return output
 
 
-FORMATS = [JSONFormat, PythonFormat, PostgresFormat]
+FORMATS = [JSONFormat, PythonFormat, PostgresFormat, RawFormat]

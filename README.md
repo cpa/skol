@@ -12,3 +12,5 @@ Run `python -m build` in virtualenv
 
 # Install
 Download a wheel release and `pip install skol-use-the-correct-filename.whl` it in your virtualenv of choice.
+
+`pip install --force-reinstall dist/skol-0.0.1-py3-none-any.whl && ln -s ~/.local/venvs/skol_venv/bin/skol ~/.local/bin/skol`
