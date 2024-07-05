@@ -113,4 +113,4 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
 
 
 if __name__ == "__main__":
-    main()
+    main(prog_name="skol")
