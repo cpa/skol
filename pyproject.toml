@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "skol"
-version = "1.0.0"
+version = "1.1.0"
 description = "`skol` is a command-line tool that transform data into lists that you can paste in your favorite language. It will try very hard to guess where the data should be split and how to treat escaped characters."
 authors = ["Charles-Pierre Astolfi <8159895-charlespierre@users.noreply.gitlab.com>"]
 readme = "README.md"
