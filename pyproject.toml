@@ -1,20 +1,21 @@
-[tool.poetry]
+[project]
 name = "skol"
 version = "1.1.0"
 description = "`skol` is a command-line tool that transform data into lists that you can paste in your favorite language. It will try very hard to guess where the data should be split and how to treat escaped characters."
-authors = ["Charles-Pierre Astolfi <8159895-charlespierre@users.noreply.gitlab.com>"]
+authors = [
+    {name = "Charles-Pierre Astolfi", email = "8159895-charlespierre@users.noreply.gitlab.com"}
+]
 readme = "README.md"
-license = "BSD-2-Clause"
+license = {text = "BSD-2-Clause"}
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=1.23.6",
+    "click>=8.1.7",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-openai = "^1.23.6"
-click = "^8.1.7"
-
+[project.scripts]
+skol = "skol.main:main"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-skol = 'skol.main:main'
+requires = ["hatchling"]
+build-backend = "hatchling.build"

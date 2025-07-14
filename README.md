@@ -8,4 +8,14 @@ Check `examples.txt` for a sample of the kind of transformation that `skol` can 
 `curl -s "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nama_10_gdp?format=JSON&lang=EN&time=2019" | jq '.dimension.geo.category.index' | jq keys | skol --format=postgres`
 
 # Build and install
-Run `poetry build`. You can then run `pipx install dist/skol-use-the-correct-filename.whl`
+Run `uv build`. You can then run `pipx install dist/skol-1.1.0-py3-none-any.whl`
+
+Alternatively, you can install directly from the source directory:
+```bash
+uv pip install .
+```
+
+Or for development:
+```bash
+uv pip install -e .
+```
