@@ -14,12 +14,32 @@ from .llm import ask
 
 @click.command()
 @click.argument("filename", default=sys.stdin, type=click.File(mode="r"))
-@click.option("--format", "-f", type=click.Choice([format.name for format in FORMATS], case_sensitive=False), default="JSON", help="Output format")
-@click.option("--skip-empty-lines/--keep-empty-lines", "-s", default=True, help="Defaults to removing empty lines from input")
 @click.option(
-    "--comment-string", "-c", default="#", help="Prefix character for comment lines (that will be ignored), defaults to ignoring lines starting with #"
+    "--format",
+    "-f",
+    type=click.Choice([format.name for format in FORMATS], case_sensitive=False),
+    default="JSON",
+    help="Output format",
 )
-@click.option("--sep", "-s", "separator", type=click.STRING, default=None, help="Separator character or string")
+@click.option(
+    "--skip-empty-lines/--keep-empty-lines",
+    "-s",
+    default=True,
+    help="Defaults to removing empty lines from input",
+)
+@click.option(
+    "--comment-string",
+    "-c",
+    default="#",
+    help="Prefix character for comment lines (that will be ignored), defaults to ignoring lines starting with #",
+)
+@click.option(
+    "--sep",
+    "separator",
+    type=click.STRING,
+    default=None,
+    help="Separator character or string",
+)
 @click.option(
     "--ai",
     "--ask-the-gods",
@@ -43,7 +63,13 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
 
     # Read the input data
     raw_data = filename.read()
-    raw_data = "\n".join([line for line in raw_data.split(sep="\n") if not line.startswith(comment_string)])
+    raw_data = "\n".join(
+        [
+            line
+            for line in raw_data.split(sep="\n")
+            if not line.startswith(comment_string)
+        ]
+    )
 
     if skip_empty_lines:
         raw_data = "\n".join([line for line in raw_data.split("\n") if line != ""])
@@ -61,13 +87,15 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
         try:
             openai_api_key = os.getenv("OPENAI_API_KEY")
         except:
-            sys.exit("You must set the OPENAI_API_KEY environment variable. See --help for details.")
+            sys.exit(
+                "You must set the OPENAI_API_KEY environment variable. See --help for details."
+            )
         try:
-            response = ask(raw_data, openai_api_key)
-            logging.debug(f"OPENAI's response:\n {response}")
+            response_text = ask(raw_data, openai_api_key)
+            logging.debug(f"OPENAI's response:\n {response_text}")
             import json
 
-            json_response = response["choices"][0]["text"]
+            json_response = response_text.strip()
             logging.debug(f"We choose this output: {json_response}")
             click.echo(output_format.to_string(json.loads(json_response)))
         except Exception as e:
@@ -95,8 +123,16 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
     quoted, quote_char = guess_if_data_is_quoted(raw_data)
     if quoted:
         split_by_quote_char_data = split_by_quote_char(raw_data, quote_char)
-        outside_fragments = [fragment for fragment, status in split_by_quote_char_data if status == "OUTSIDE"]
-        inside_fragments = [fragment for fragment, status in split_by_quote_char_data if status == "INSIDE"]
+        outside_fragments = [
+            fragment
+            for fragment, status in split_by_quote_char_data
+            if status == "OUTSIDE"
+        ]
+        inside_fragments = [
+            fragment
+            for fragment, status in split_by_quote_char_data
+            if status == "INSIDE"
+        ]
         if len(outside_fragments) == 0:
             raise ValueError("We cannot have an empty outside_fragments there")
         elif len(outside_fragments) == 1:
@@ -106,10 +142,14 @@ def main(filename, format, skip_empty_lines, comment_string, separator, ai, debu
                 # Then we consider that the data "real data" is the
                 # data inside quotes and that we can discard the
                 # outside fragments
-                click.echo(output_format.to_string([x.strip() for x in inside_fragments]))
+                click.echo(
+                    output_format.to_string([x.strip() for x in inside_fragments])
+                )
     else:
         separator = guess_separator_unquoted(raw_data)
-        click.echo(output_format.to_string([x.strip() for x in raw_data.split(sep=separator)]))
+        click.echo(
+            output_format.to_string([x.strip() for x in raw_data.split(sep=separator)])
+        )
 
 
 if __name__ == "__main__":

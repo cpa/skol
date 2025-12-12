@@ -26,6 +26,7 @@ class Format:
     def to_string(obj):
         raise NotImplementedError
 
+
 class RawFormat(Format):
     name = "Raw"
 
@@ -35,7 +36,8 @@ class RawFormat(Format):
 
     @staticmethod
     def to_string(obj):
-        '\n'.join([o for o in obj])
+        "\n".join([o for o in obj])
+
 
 class JSONFormat(Format):
     name = "JSON"
@@ -88,13 +90,28 @@ class PostgresFormat(Format):
     def to_string(obj):
         # TODO: check if the input is a list of string/float/ints and warn otherwise
         if not isinstance(obj, list):
-            logging.warning("Data is not a list. Will try to output something, but check the result carefully.")
-        elif not all([isinstance(e, int) or isinstance(e, float) or isinstance(e, str) for e in obj]):
+            logging.warning(
+                "Data is not a list. Will try to output something, but check the result carefully."
+            )
+        elif not all(
+            [
+                isinstance(e, int) or isinstance(e, float) or isinstance(e, str)
+                for e in obj
+            ]
+        ):
             logging.warning(
                 "Some elements of the data are not recognized as either int, float or string. Will try to output something, but check the result carefully."
             )
 
-        escaped_obj = ["'" + e.replace("[", "\[").replace("]", "\]").replace(",", "\,").replace("'", "'") + "'" for e in obj]
+        escaped_obj = [
+            "'"
+            + e.replace("[", r"\[")
+            .replace("]", r"\]")
+            .replace(",", r"\,")
+            .replace("'", "'")
+            + "'"
+            for e in obj
+        ]
         output = "ARRAY[ " + ",".join(escaped_obj) + "]"
         return output
 

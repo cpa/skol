@@ -4,18 +4,28 @@
 
 # Example
 Check `examples.txt` for a sample of the kind of transformation that `skol` can do.
-`curl -s "https://api-adresse.data.gouv.fr/reverse/?lat=50.622772&lon=3.043936&limit=10" | jq '.features[].properties.id' | skol --format=postgres`
 `curl -s "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nama_10_gdp?format=JSON&lang=EN&time=2019" | jq '.dimension.geo.category.index' | jq keys | skol --format=postgres`
+`curl -s "https://api-adresse.data.gouv.fr/reverse/?lat=50.622772&lon=3.043936&limit=10" | jq '.features[].properties.id' | skol --format=postgres` (compare the output with `--ai` enabled)
 
 # Build and install
-Run `uv build`. You can then run `pipx install dist/skol-1.1.0-py3-none-any.whl`
+Use the `uv` CLI for packaging and build tasks. Install `uv>=0.4` (see https://docs.astral.sh/uv/) and run `uv build`.
+
+You can then install the generated wheel with:
+```bash
+uv tool install dist/skol-*-py3-none-any.whl
+```
 
 Alternatively, you can install directly from the source directory:
 ```bash
-uv pip install .
+uv tool install .
 ```
 
-Or for development:
+Or for development installs:
 ```bash
 uv pip install -e .
+```
+
+Once installed, you can run the CLI without activating a virtual environment:
+```bash
+uvx skol --help
 ```
